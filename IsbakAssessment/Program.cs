@@ -1,4 +1,7 @@
-﻿using System;
+﻿using IsbakAssessment.Business;
+using IsbakAssessment.Dtos;
+using System;
+using System.Collections.Generic;
 
 namespace IsbakAssessment
 {
@@ -6,7 +9,19 @@ namespace IsbakAssessment
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ICryptoService service = new CryptoService();
+            List<CryptoModel> list = service.GetCurrencyRatesByTcmb();
+
+            foreach (CryptoModel item in list)
+            {
+                Console.WriteLine(
+                    item.Symbol + " " + 
+                    item.BidQty + " " +
+                    item.AskQty + " " +
+                    item.AskPrice);
+            }
+
+            Console.ReadLine();
         }
     }
 }
