@@ -1,11 +1,21 @@
 ﻿
 $(document).ready(function () {
-  fillTable(newData);
+
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/signalrurl")
+    .withAutomaticReconnect([0, 3000, 5000, 10000, 15000, 30000])
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+
+  connection.on('NewCryptoData', (newData) => {
+    fillTable(newData);
+  });
+
 });
 
 function fillTable(data) {
   let table = document.getElementById("table");
-  let tableBody = document.getElementById("table").querySelector('tbody');
+  let tableBody = table.querySelector('tbody');
   let bodyText = "";
 
   for (let i = 0; i < data.length; i++) {
@@ -16,36 +26,3 @@ function fillTable(data) {
 
   tableBody.innerHTML = bodyText;
 }
-
-var newData = [
-  {
-    "name": "Name1",
-    "symbol": "Symbol1",
-    "price": 40,
-    "changeRate": 20
-  },
-  {
-    "name": "Name2",
-    "symbol": "Symbol2",
-    "price": 30,
-    "changeRate": 10
-  },
-  {
-    "name": "Name3",
-    "symbol": "Symbol3",
-    "price": 25,
-    "changeRate": 6
-  },
-  {
-    "name": "Name4",
-    "symbol": "Symbol4",
-    "price": 35,
-    "changeRate": 8
-  },
-  {
-    "name": "Name5",
-    "symbol": "Symbol5",
-    "price": 78,
-    "changeRate": 4
-  }
-];
