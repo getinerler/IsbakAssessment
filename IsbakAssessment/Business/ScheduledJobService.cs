@@ -22,6 +22,8 @@ namespace IsbakAssessment.Business
             {
                 List<CryptoModel> list = _cryptoService.GetCurrencyRatesByTcmb();
 
+                await _cryptoService.SaveListToDatabase(list);
+
                 List<CryptoSignalRModel> newList = list
                     .Select(x => new CryptoSignalRModel()
                     {
@@ -32,19 +34,24 @@ namespace IsbakAssessment.Business
                     })
                     .ToList();
 
-                var con = new HubConnectionBuilder()
-                  .WithUrl("https://localhost:44356/signalrurl")
-                  .Build();
-
-                await con.StartAsync();
-
-                await con.InvokeAsync("NewCryptoData", newList.ToArray());
+                await SendSignal(newList);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-           
+        }
+
+        private async Task SendSignal(List<CryptoSignalRModel> newList)
+        {
+
+            var con = new HubConnectionBuilder()
+              .WithUrl("https://localhost:44356/signalrurl")
+              .Build();
+
+            await con.StartAsync();
+
+            await con.InvokeAsync("NewCryptoData", newList.ToArray());
         }
     }
 }

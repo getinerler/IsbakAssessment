@@ -1,7 +1,9 @@
 ﻿using IsbakAssessment.Business;
+using IsbakAssessment.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,6 +40,14 @@ namespace IsbakAssessment
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+
+            string connectionString =
+                "data source=.;initial catalog=IsbakAssessment;user id=sa;" +
+                "MultipleActiveResultSets=True;integrated security=True;";
+
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
+
             AddDependencies(services);
         }
 
@@ -51,6 +61,8 @@ namespace IsbakAssessment
             services.AddTransient<ICryptoService, CryptoService>();
             //services.AddTransient<IHostedService, HostedService>();
             services.AddTransient<IScheduledJobService, ScheduledJobService>();
+
+            services.AddTransient<ICryptoRepo, CryptoRepo>();
         }
     }
 }
