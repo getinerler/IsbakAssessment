@@ -20,8 +20,15 @@ namespace IsbakAssessment.Business
 
         private static string Get(string uri, string parameters)
         {
-            using (var client = new HttpClient(new HttpClientHandler
-            { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+            var handler = new HttpClientHandler();
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            handler.ServerCertificateCustomValidationCallback =
+                (httpRequestMessage, cert, cetChain, policyErrors) =>
+                {
+                    return true;
+                };
+
+            using (var client = new HttpClient(handler))
             {
                 client.BaseAddress = new Uri(uri);
                 HttpResponseMessage response = client.GetAsync(parameters).Result;

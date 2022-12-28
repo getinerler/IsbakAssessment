@@ -7,10 +7,24 @@ $(document).ready(function () {
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-  connection.on('NewCryptoData', (newData) => {
+  connection.on('GetCryptoData', (newData) => {
     fillTable(newData);
   });
 
+  connection.start().then(function () {
+
+  }).catch(console.error);
+
+  let tryingToReconnect = false;
+
+  connection.onreconnecting((error) => {
+    tryingToReconnect = true;
+  });
+
+  connection.onreconnected((connectionId) => {
+    tryingToReconnect = false;
+
+  });
 });
 
 function fillTable(data) {
