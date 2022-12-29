@@ -7,7 +7,7 @@
     .build();
 
   connection.on('GetCryptoData', (newData) => {
-    document.getElementById("error").innerHTML = "";
+    setErrorText("");
     fillTable(newData);
   });
 
@@ -16,13 +16,17 @@
   }).catch(console.error);
 
   connection.onreconnecting((error) => {
-    document.getElementById("error").innerHTML = `Connection lost. Error: ${error}. Connecting again...`;
+    setErrorText(`Connection lost. Error: ${error}. Connecting again...`);
   });
 
   connection.onreconnected((connectionId) => {
-    document.getElementById("error").innerHTML = "";
+    setErrorText("");
   });
 });
+
+function setErrorText(text) {
+  document.getElementById("error").innerHTML = text;
+}
 
 function fillTable(data) {
   let table = document.getElementById("table");
