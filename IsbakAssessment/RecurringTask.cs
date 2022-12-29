@@ -1,15 +1,14 @@
-﻿using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace IsbakAssessment.Business
 {
-    class HostedService : IHostedService
+    class RecurringTask
     {
         private readonly IScheduledJobService _service;
 
-        public HostedService(IScheduledJobService service)
+        public RecurringTask(IScheduledJobService service)
         {
             _service = service;
         }
