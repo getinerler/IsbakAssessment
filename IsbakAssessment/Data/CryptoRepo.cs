@@ -36,7 +36,8 @@ namespace IsbakAssessment.Data
                     Name = x.Symbol,
                     Symbol = x.Symbol,
                     Price = x.Price,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    ChangeRate = x.ChangeRate
                 })
                 .ToList();
 
