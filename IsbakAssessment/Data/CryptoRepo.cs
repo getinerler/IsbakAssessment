@@ -35,7 +35,7 @@ namespace IsbakAssessment.Data
                 {
                     Name = x.Symbol,
                     Symbol = x.Symbol,
-                    Price = x.AskPrice,
+                    Price = x.Price,
                     CreatedDate = DateTime.Now
                 })
                 .ToList();

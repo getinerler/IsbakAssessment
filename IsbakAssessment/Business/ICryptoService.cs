@@ -6,7 +6,7 @@ namespace IsbakAssessment.Business
 {
     public interface ICryptoService
     {
-        List<CryptoModel> GetCurrencyRatesByTcmb();
+        CoinMarketCapListDto GetCurrencyRatesByTcmb();
         Task SaveListToDatabase(List<CryptoModel> list);
     }
 }

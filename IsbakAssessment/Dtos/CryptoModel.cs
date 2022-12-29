@@ -4,16 +4,9 @@ namespace IsbakAssessment.Dtos
 {
     public class CryptoModel
     {
-        [JsonProperty("symbol")]
+        public string Name { get; set; }
         public string  Symbol { get; set; }
-
-        [JsonProperty("bidQty")]
-        public decimal BidQty { get; set; }
-
-        [JsonProperty("askPrice")]
-        public decimal AskPrice { get; set; }
-
-        [JsonProperty("askQty")]
-        public decimal AskQty { get; set; }
+        public decimal Price { get; set; }
+        public int ChangeRate { get; set; }
     }
 }
