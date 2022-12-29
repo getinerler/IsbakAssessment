@@ -12,17 +12,12 @@ namespace IsbakAssessment
     {
         static async Task Main(string[] args)
         {
-            int delay = 30000;
-            string connectionString =
-              "data source=.;initial catalog=IsbakAssessment;user id=sa;" +
-              "MultipleActiveResultSets=True;integrated security=True;";
-
             using IHost host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((_, services) => services
                     .AddTransient<ICryptoService, CryptoService>()
                     .AddTransient<IScheduledJobService, ScheduledJobService>()
                     .AddTransient<ICryptoRepo, CryptoRepo>()
-                    .AddDbContext<DataContext>(options => options.UseSqlServer(connectionString)))
+                    .AddDbContext<DataContext>(options => options.UseSqlServer(Globals.ConnectionString)))
                 .Build();
 
             using IServiceScope serviceScope = host.Services.CreateScope();
@@ -35,7 +30,7 @@ namespace IsbakAssessment
                 {
                     await _service.SaveAndBroadcastNewCryptoCurrencies();
                     Console.WriteLine("Task done " + DateTime.Now.ToShortTimeString() + ".");
-                    await Task.Delay(delay);
+                    await Task.Delay(Globals.CurrencyFetchIntervalSecond);
                 }
                 catch (Exception ex)
                 {

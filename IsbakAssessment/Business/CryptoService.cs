@@ -13,8 +13,7 @@ namespace IsbakAssessment.Business
             //Token tükenirse sandbox ortamı kullanılabilir.
             //https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest
 
-            UriBuilder URL = new UriBuilder(
-                "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest");
+            UriBuilder URL = new UriBuilder(Globals.CoinMarketCapUrl);
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             queryString["start"] = "1";
@@ -24,7 +23,7 @@ namespace IsbakAssessment.Business
             URL.Query = queryString.ToString();
 
             WebClient client = new WebClient();
-            client.Headers.Add("X-CMC_PRO_API_KEY", "fb9f9115-e803-415d-8102-6a76a5342a2b");
+            client.Headers.Add("X-CMC_PRO_API_KEY", Globals.CoinMarketCapKey);
             client.Headers.Add("Accepts", "application/json");
             string res = client.DownloadString(URL.ToString());
 

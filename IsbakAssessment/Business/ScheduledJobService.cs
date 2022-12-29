@@ -21,17 +21,10 @@ namespace IsbakAssessment.Business
 
         public async Task SaveAndBroadcastNewCryptoCurrencies()
         {
-            try
-            {
-                CoinMarketCapListDto list = _cryptoService.GetCurrencyRatesByTcmb();
-                List<CryptoModel> cryptoList = ConvertToCryptoModel(list);
-                await _cryptoRepo.SaveList(cryptoList);
-                await SendSignal(cryptoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            CoinMarketCapListDto list = _cryptoService.GetCurrencyRatesByTcmb();
+            List<CryptoModel> cryptoList = ConvertToCryptoModel(list);
+            await _cryptoRepo.SaveList(cryptoList);
+            await SendSignal(cryptoList);
         }
 
         private List<CryptoModel> ConvertToCryptoModel(CoinMarketCapListDto list)
@@ -52,7 +45,7 @@ namespace IsbakAssessment.Business
         private async Task SendSignal(List<CryptoModel> newList)
         {
             var con = new HubConnectionBuilder()
-              .WithUrl("https://localhost:44356/signalrurl")
+              .WithUrl(Globals.FrontendProjectUrl)
               .Build();
             await con.StartAsync();
             await con.InvokeAsync("NewCryptoData", newList.ToArray());
