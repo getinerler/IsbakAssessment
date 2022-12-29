@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
   const connection = new signalR.HubConnectionBuilder()
     .withUrl("/signalrurl")
@@ -8,6 +7,7 @@ $(document).ready(function () {
     .build();
 
   connection.on('GetCryptoData', (newData) => {
+    document.getElementById("error").innerHTML = "";
     fillTable(newData);
   });
 
@@ -15,15 +15,12 @@ $(document).ready(function () {
 
   }).catch(console.error);
 
-  let tryingToReconnect = false;
-
   connection.onreconnecting((error) => {
-    tryingToReconnect = true;
+    document.getElementById("error").innerHTML = `Connection lost. Error: ${error}. Connecting again...`;
   });
 
   connection.onreconnected((connectionId) => {
-    tryingToReconnect = false;
-
+    document.getElementById("error").innerHTML = "";
   });
 });
 
@@ -35,7 +32,7 @@ function fillTable(data) {
   for (let i = 0; i < data.length; i++) {
     let el = data[i];
     bodyText +=
-      `<tr><td>${el.name}</td><td>${el.symbol}</td><td>${el.price}</td><td>${el.changeRate}</td></tr>`;
+      `<tr><td>${el.name}</td><td>${el.symbol}</td><td>${el.price}</td><td>%${el.changeRate}</td></tr>`;
   }
 
   tableBody.innerHTML = bodyText;
