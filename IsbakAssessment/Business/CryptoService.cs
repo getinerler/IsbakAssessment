@@ -1,23 +1,13 @@
-﻿using IsbakAssessment.Data;
-using IsbakAssessment.Dtos;
+﻿using IsbakAssessment.Dtos;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace IsbakAssessment.Business
 {
     public class CryptoService : ICryptoService
     {
-        private readonly ICryptoRepo _repo;
-
-        public CryptoService(ICryptoRepo repo)
-        {
-            _repo = repo;
-        }
-
         public CoinMarketCapListDto GetCurrencyRatesByTcmb()
         {
             //Token tükenirse sandbox ortamı kullanılabilir.
@@ -28,7 +18,7 @@ namespace IsbakAssessment.Business
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             queryString["start"] = "1";
-            queryString["limit"] = "5000";
+            queryString["limit"] = "100";
             queryString["convert"] = "TRY";
 
             URL.Query = queryString.ToString();
@@ -40,11 +30,6 @@ namespace IsbakAssessment.Business
 
             CoinMarketCapListDto item = JsonConvert.DeserializeObject<CoinMarketCapListDto>(res);
             return item;
-        }
-
-        public async Task SaveListToDatabase(List<CryptoModel> list)
-        {
-            await _repo.SaveList(list);
         }
     }
 }

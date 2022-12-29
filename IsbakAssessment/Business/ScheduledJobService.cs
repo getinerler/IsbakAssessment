@@ -1,4 +1,5 @@
-﻿using IsbakAssessment.Dtos;
+﻿using IsbakAssessment.Data;
+using IsbakAssessment.Dtos;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace IsbakAssessment.Business
     public class ScheduledJobService : IScheduledJobService
     {
         private readonly ICryptoService _cryptoService;
+        private readonly ICryptoRepo _cryptoRepo;
 
-        public ScheduledJobService(ICryptoService cryptoService)
+        public ScheduledJobService(ICryptoService cryptoService, ICryptoRepo cryptoRepo)
         {
             _cryptoService = cryptoService;
+            _cryptoRepo = cryptoRepo;
         }
 
         public async Task SaveAndBroadcastNewCryptoCurrencies()
@@ -22,7 +25,7 @@ namespace IsbakAssessment.Business
             {
                 CoinMarketCapListDto list = _cryptoService.GetCurrencyRatesByTcmb();
                 List<CryptoModel> cryptoList = ConvertToCryptoModel(list);
-                await _cryptoService.SaveListToDatabase(cryptoList);
+                await _cryptoRepo.SaveList(cryptoList);
                 await SendSignal(cryptoList);
             }
             catch (Exception ex)
