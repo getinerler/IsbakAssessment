@@ -2,7 +2,7 @@
 
 İsbak Firması için Assessment. 
 
-Kripto para verilerinin, CoinMarketCap API'sinden alınıp hem veritabanına kaydedildiği hem SignalR ile başka bir ASP.NET MVC Core projesine aktarıldığı konsol uygulaması. 
+Kripto para verilerinin, CoinMarketCap API'sinden alınıp hem veritabanına kaydedildiği hem SignalR ile bir ASP.NET MVC Core projesine aktarıldığı konsol uygulaması. 
 
 ## Çalıştırma
 
